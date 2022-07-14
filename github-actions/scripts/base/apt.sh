@@ -15,8 +15,8 @@ echo "APT::Acquire::Retries \"10\";" > /etc/apt/apt.conf.d/80-retries
 echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
 # APT understands a field called Phased-Update-Percentage which can be used to control the rollout of a new version. It is an integer between 0 and 100.
-# In case you have multiple systems that you want to receive the same set of updates,
-# you can set APT::Machine-ID to a UUID such that they all phase the same,
+# In case you have multiple systems that you want to receive the same set of updates, 
+# you can set APT::Machine-ID to a UUID such that they all phase the same, 
 # or set APT::Get::Never-Include-Phased-Updates or APT::Get::Always-Include-Phased-Updates to true such that APT will never/always consider phased updates.
 # apt-cache policy pkgname
 echo 'APT::Get::Always-Include-Phased-Updates "true";' > /etc/apt/apt.conf.d/99-phased-updates
@@ -31,7 +31,7 @@ EOF
 # Uninstall unattended-upgrades
 apt-get purge unattended-upgrades
 
-# Need to limit arch for default apt repos due to
+# Need to limit arch for default apt repos due to 
 # https://github.com/actions/virtual-environments/issues/1961
 sed -i'' -E 's/^deb http:\/\/(azure.archive|security).ubuntu.com/deb [arch=amd64,i386] http:\/\/\1.ubuntu.com/' /etc/apt/sources.list
 
