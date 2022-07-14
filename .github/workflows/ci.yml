@@ -12,7 +12,8 @@ jobs:
     if: github.repository == 'depot/amis'
     steps:
       - uses: actions/checkout@v3
-      - name: Validate Template
+
+      - name: Validate template
         uses: hashicorp/packer-github-actions@master
         with:
           command: validate
@@ -20,13 +21,20 @@ jobs:
           target: ubuntu-20.04.pkr.hcl
           working_directory: github-actions
 
-      - name: Configure AWS Credentials
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::375021575472:role/github-actions-builder-images
 
-      - name: Build Artifact
+      - name: Init project
+        uses: hashicorp/packer-github-actions@master
+        with:
+          command: init
+          target: ubuntu-20.04.pkr.hcl
+          working_directory: github-actions
+
+      - name: Build artifact
         uses: hashicorp/packer-github-actions@master
         with:
           command: build
