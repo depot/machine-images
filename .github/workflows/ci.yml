@@ -26,6 +26,7 @@ jobs:
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::375021575472:role/github-actions-builder-images
+          role-duration-seconds: 21600 # 6 hours
 
       - name: Init project
         uses: hashicorp/packer-github-actions@master
