@@ -97,6 +97,12 @@ source "amazon-ebs" "builder" {
     volume_type           = "gp3"
     delete_on_termination = true
   }
+
+  # Wait up to an hour for the AMI to be ready.
+  aws_polling {
+    delay_seconds = 15
+    max_attempts  = 240
+  }
 }
 
 build {
