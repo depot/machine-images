@@ -12,7 +12,7 @@ variable "ami-prefix" {
 
 variable "image_os" {
   type    = string
-  default = "ubuntu22"
+  default = "ubuntu20"
 }
 
 variable "image_version" {
@@ -151,7 +151,7 @@ build {
 
   provisioner "file" {
     destination = "${var.installer_script_folder}/toolset.json"
-    source      = "${path.root}/toolsets/toolset-2204.json"
+    source      = "${path.root}/toolsets/toolset-2004.json"
   }
 
   provisioner "shell" {
@@ -286,7 +286,7 @@ build {
   }
 
   provisioner "file" {
-    destination = "${path.root}/Ubuntu2204-Readme.md"
+    destination = "${path.root}/Ubuntu2004-Readme.md"
     direction   = "download"
     source      = "${var.image_folder}/Ubuntu-Readme.md"
   }
@@ -304,11 +304,11 @@ build {
 
   provisioner "file" {
     destination = "/tmp/"
-    source      = "${path.root}/config/ubuntu2204.conf"
+    source      = "${path.root}/config/ubuntu2004.conf"
   }
 
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    inline          = ["mkdir -p /etc/vsts", "cp /tmp/ubuntu2204.conf /etc/vsts/machine_instance.conf"]
+    inline          = ["mkdir -p /etc/vsts", "cp /tmp/ubuntu2004.conf /etc/vsts/machine_instance.conf"]
   }
 }
