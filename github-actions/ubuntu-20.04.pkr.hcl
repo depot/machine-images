@@ -25,7 +25,7 @@ packer {
 
 source "amazon-ebs" "builder" {
   ami_name              = local.name
-  instance_type         = "c6i.medium"
+  instance_type         = "c6i.large"
   region                = "us-east-1"
   ssh_username          = "ubuntu"
   force_deregister      = true
