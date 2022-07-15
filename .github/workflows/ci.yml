@@ -13,13 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Install packer
+        run: |
+          wget https://releases.hashicorp.com/packer/1.8.2/packer_1.8.2_linux_amd64.zip
+          unzip packer_1.8.2_linux_amd64.zip
+          mv packer /usr/local/bin/packer
+
       - name: Validate template
-        uses: hashicorp/packer-github-actions@master
-        with:
-          command: validate
-          arguments: -syntax-only
-          target: ubuntu-20.04.pkr.hcl
-          working_directory: github-actions
+        run: packer validate -syntax-only github-actions
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -29,18 +30,7 @@ jobs:
           role-duration-seconds: 21600 # 6 hours
 
       - name: Init project
-        uses: hashicorp/packer-github-actions@master
-        with:
-          command: init
-          target: ubuntu-20.04.pkr.hcl
-          working_directory: github-actions
+        run: packer init github-actions
 
       - name: Build artifact
-        uses: hashicorp/packer-github-actions@master
-        with:
-          command: build
-          arguments: "-color=false -on-error=abort -var ami-name=depot-github-actions-ubuntu-20.04-snapshot"
-          target: ubuntu-20.04.pkr.hcl
-          working_directory: github-actions
-        env:
-          PACKER_LOG: 1
+        run: packer build -var ami-name=depot-github-actions-ubuntu-20.04-snapshot github-actions/ubuntu-20.04.pkr.hcl
