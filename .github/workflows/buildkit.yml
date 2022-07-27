@@ -30,7 +30,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam::375021575472:role/github-actions-images
+          role-to-assume: arn:aws:iam::375021575472:role/github-actions-builder-images
           role-duration-seconds: 21600 # 6 hours
 
       - name: Init project
