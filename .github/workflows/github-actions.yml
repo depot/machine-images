@@ -1,5 +1,8 @@
-name: CI
-on: push
+name: AMI (github-actions)
+on:
+  push:
+    paths:
+      - github-actions/**
 
 permissions:
   contents: read

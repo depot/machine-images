@@ -1,0 +1,39 @@
+name: AMI (buildkit)
+on:
+  push:
+    paths:
+      - buildkit/**
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    if: github.repository == 'depot/amis'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install packer
+        run: |
+          wget https://releases.hashicorp.com/packer/1.8.2/packer_1.8.2_linux_amd64.zip
+          unzip packer_1.8.2_linux_amd64.zip
+          mv packer /usr/local/bin/packer
+
+      - name: Validate template
+        run: packer validate -syntax-only buildkit
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::375021575472:role/buildkit-builder-images
+          role-duration-seconds: 21600 # 6 hours
+
+      - name: Init project
+        run: packer init buildkit
+
+      - name: Build artifact
+        run: packer build -var ami-name=depot-buildkit-snapshot buildkit/buildkit.pkr.hcl
