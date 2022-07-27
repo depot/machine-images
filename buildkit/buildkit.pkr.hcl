@@ -68,7 +68,7 @@ build {
 
 source "amazon-ebs" "arm64" {
   ami_name              = var.ami-name == "" ? "${var.ami-prefix}-arm64-${local.timestamp}" : "${var.ami-name}-arm64"
-  instance_type         = "c6i.large"
+  instance_type         = "c6g.large"
   region                = "us-east-1"
   ssh_username          = "ec2-user"
   force_deregister      = true
