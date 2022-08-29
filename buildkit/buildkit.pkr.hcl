@@ -95,6 +95,28 @@ source "amazon-ebs" "arm64" {
   ssh_username          = "ec2-user"
   force_deregister      = true
   force_delete_snapshot = true
+  ami_groups            = ["all"]
+
+  # Copy to all non-opt-in regions (in addition to us-east-1 above)
+  # See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
+  ami_regions = [
+    "ap-northeast-1",
+    "ap-northeast-1",
+    "ap-northeast-2",
+    "ap-northeast-2",
+    "ap-northeast-3",
+    "ap-south-1",
+    "ca-central-1",
+    "eu-central-1",
+    "eu-north-1",
+    "eu-west-1",
+    "eu-west-2",
+    "eu-west-3",
+    "sa-east-1",
+    "us-east-2",
+    "us-west-1",
+    "us-west-2",
+  ]
 
   source_ami_filter {
     filters = {
