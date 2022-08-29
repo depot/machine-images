@@ -31,6 +31,27 @@ source "amazon-ebs" "amd64" {
   force_deregister      = true
   force_delete_snapshot = true
 
+  # Copy to all non-opt-in regions (in addition to us-east-1 above)
+  # See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
+  ami_regions = [
+    "ap-northeast-1",
+    "ap-northeast-1",
+    "ap-northeast-2",
+    "ap-northeast-2",
+    "ap-northeast-3",
+    "ap-south-1",
+    "ca-central-1",
+    "eu-central-1",
+    "eu-north-1",
+    "eu-west-1",
+    "eu-west-2",
+    "eu-west-3",
+    "sa-east-1",
+    "us-east-2",
+    "us-west-1",
+    "us-west-2",
+  ]
+
   source_ami_filter {
     filters = {
       name                = "amzn2-ami-kernel-5.10-hvm-2.*-x86_64-gp2"
@@ -57,7 +78,7 @@ source "amazon-ebs" "amd64" {
 }
 
 build {
-  name = "amd64"
+  name    = "amd64"
   sources = ["source.amazon-ebs.amd64"]
 
   provisioner "shell" {
@@ -100,7 +121,7 @@ source "amazon-ebs" "arm64" {
 }
 
 build {
-  name = "arm64"
+  name    = "arm64"
   sources = ["source.amazon-ebs.arm64"]
 
   provisioner "shell" {
