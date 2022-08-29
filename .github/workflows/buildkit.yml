@@ -13,7 +13,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    if: github.repository == 'depot/amis'
+    if: github.repository == 'depot/machine-images'
     steps:
       - uses: actions/checkout@v3
 
