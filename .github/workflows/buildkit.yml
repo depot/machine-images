@@ -13,7 +13,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    if: github.repository == 'depot/amis'
+    if: github.repository == 'depot/machine-images'
     steps:
       - uses: actions/checkout@v3
 
@@ -37,4 +37,5 @@ jobs:
         run: packer init buildkit
 
       - name: Build artifact
+        if: github.ref == 'refs/heads/main'
         run: packer build -var ami-name=depot-buildkit-snapshot buildkit/buildkit.pkr.hcl
