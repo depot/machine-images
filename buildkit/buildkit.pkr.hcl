@@ -30,6 +30,7 @@ source "amazon-ebs" "amd64" {
   ssh_username          = "ec2-user"
   force_deregister      = true
   force_delete_snapshot = true
+  ami_groups            = ["all"]
 
   # Copy to all non-opt-in regions (in addition to us-east-1 above)
   # See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
