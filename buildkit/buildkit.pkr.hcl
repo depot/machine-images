@@ -65,7 +65,7 @@ source "amazon-ebs" "amd64" {
   }
 
   launch_block_device_mappings {
-    device_name           = "/dev/sda1"
+    device_name           = "/dev/xvda"
     volume_size           = 10
     volume_type           = "gp3"
     delete_on_termination = true
@@ -130,7 +130,7 @@ source "amazon-ebs" "arm64" {
   }
 
   launch_block_device_mappings {
-    device_name           = "/dev/sda1"
+    device_name           = "/dev/xvda"
     volume_size           = 10
     volume_type           = "gp3"
     delete_on_termination = true
