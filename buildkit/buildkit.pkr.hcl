@@ -36,11 +36,11 @@ source "amazon-ebs" "amd64" {
   # See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
   ami_regions = [
     "ap-northeast-1",
-    "ap-northeast-1",
-    "ap-northeast-2",
     "ap-northeast-2",
     "ap-northeast-3",
     "ap-south-1",
+    "ap-southeast-1",
+    "ap-southeast-2",
     "ca-central-1",
     "eu-central-1",
     "eu-north-1",
@@ -65,7 +65,7 @@ source "amazon-ebs" "amd64" {
   }
 
   launch_block_device_mappings {
-    device_name           = "/dev/sda1"
+    device_name           = "/dev/xvda"
     volume_size           = 10
     volume_type           = "gp3"
     delete_on_termination = true
@@ -101,11 +101,11 @@ source "amazon-ebs" "arm64" {
   # See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
   ami_regions = [
     "ap-northeast-1",
-    "ap-northeast-1",
-    "ap-northeast-2",
     "ap-northeast-2",
     "ap-northeast-3",
     "ap-south-1",
+    "ap-southeast-1",
+    "ap-southeast-2",
     "ca-central-1",
     "eu-central-1",
     "eu-north-1",
@@ -130,7 +130,7 @@ source "amazon-ebs" "arm64" {
   }
 
   launch_block_device_mappings {
-    device_name           = "/dev/sda1"
+    device_name           = "/dev/xvda"
     volume_size           = 10
     volume_type           = "gp3"
     delete_on_termination = true
