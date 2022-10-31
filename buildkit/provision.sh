@@ -35,8 +35,24 @@ ca = "/etc/buildkit/tlsca.crt"
 [worker.oci]
 enabled = true
 gc = true
-gckeepstorage = 45000000000 # 45GB
+gckeepstorage = 30000000000 # 30GB
 
 [worker.containerd]
 enabled = false
+
+[[worker.oci.gcpolicy]]
+keepBytes = 10240000000 # 10 GB
+keepDuration = 604800 # 7 days - 3600 * 24 * 7
+filters = [
+  "type==source.local",
+  "type==exec.cachemount",
+  "type==source.git.checkout",
+]
+
+[[worker.oci.gcpolicy]]
+keepBytes = 30000000000 # 30 GB
+
+[[worker.oci.gcpolicy]]
+all = true
+keepBytes = 30000000000 # 30 GB
 EOF
