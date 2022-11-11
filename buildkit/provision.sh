@@ -17,7 +17,7 @@ case "$(uname -m)" in
   *) echo >&2 "error: unsupported architecture: $(uname -m)"; exit 1 ;;
 esac
 
-curl -L "https://github.com/moby/buildkit/releases/download/v0.10.4/buildkit-v0.10.4.linux-${arch}.tar.gz" | \
+curl -L "https://github.com/moby/buildkit/releases/download/v0.10.6/buildkit-v0.10.6.linux-${arch}.tar.gz" | \
   tar -xz -C /usr/bin --strip-components=1
 
 mkdir -p /etc/buildkit
@@ -36,6 +36,7 @@ ca = "/etc/buildkit/tlsca.crt"
 enabled = true
 gc = true
 gckeepstorage = 30000000000 # 30GB
+max-parallelism = 6
 
 [worker.containerd]
 enabled = false
