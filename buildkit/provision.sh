@@ -36,7 +36,7 @@ ca = "/etc/buildkit/tlsca.crt"
 enabled = true
 gc = true
 gckeepstorage = 30000000000 # 30GB
-max-parallelism = 6
+max-parallelism = 12
 
 [worker.containerd]
 enabled = false
