@@ -17,9 +17,9 @@ swapon /swapfile
 echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
 echo "vm.swappiness = 0" >> /etc/sysctl.conf
 
-# Download machine-agent v1.3.0
+# Download machine-agent v1.4.0
 
-wget -O /tmp/machine-agent.tar.gz "https://dl.depot.dev/machine-agent/download/linux/$(uname -m)/v1.3.0"
+wget -O /tmp/machine-agent.tar.gz "https://dl.depot.dev/machine-agent/download/linux/$(uname -m)/v1.4.0"
 tar -zxf /tmp/machine-agent.tar.gz --strip-components=1 --directory /usr/bin bin/machine-agent
 /usr/bin/machine-agent --version
 
