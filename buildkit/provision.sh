@@ -31,7 +31,8 @@ case "$(uname -m)" in
   *) echo >&2 "error: unsupported architecture: $(uname -m)"; exit 1 ;;
 esac
 
-curl -L "https://github.com/moby/buildkit/releases/download/v0.11.3/buildkit-v0.11.3.linux-${arch}.tar.gz" | \
+buildkit_version="v0.11.3-depot.1"
+curl -L "https://github.com/depot/buildkit/releases/download/${buildkit_version}/buildkit-${buildkit_version}.linux-${arch}.tar.gz" | \
   tar -xz -C /usr/bin --strip-components=1
 
 mkdir -p /etc/buildkit
