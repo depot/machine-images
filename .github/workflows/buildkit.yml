@@ -38,4 +38,4 @@ jobs:
 
       - name: Build artifact
         if: github.ref == 'refs/heads/main'
-        run: packer build -var ami-name=depot-buildkit-snapshot buildkit/buildkit.pkr.hcl
+        run: packer build -var ami-name=depot-buildkit-2-snapshot buildkit/buildkit.pkr.hcl
