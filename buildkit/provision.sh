@@ -3,7 +3,7 @@ set -ex
 
 # Update software
 yum update -y
-yum install -y git
+yum install -y git btrfs-progs
 
 # Disable unnecessary services
 systemctl disable postfix.service
@@ -17,9 +17,9 @@ swapon /swapfile
 echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
 echo "vm.swappiness = 0" >> /etc/sysctl.conf
 
-# Download machine-agent v1.8.1
+# Download machine-agent v1.9.0
 
-wget -O /tmp/machine-agent.tar.gz "https://dl.depot.dev/machine-agent/download/linux/$(uname -m)/v1.8.1"
+wget -O /tmp/machine-agent.tar.gz "https://dl.depot.dev/machine-agent/download/linux/$(uname -m)/v1.9.0"
 tar -zxf /tmp/machine-agent.tar.gz --strip-components=1 --directory /usr/bin bin/machine-agent
 /usr/bin/machine-agent --version
 
