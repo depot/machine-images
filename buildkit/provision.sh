@@ -31,7 +31,7 @@ case "$(uname -m)" in
   *) echo >&2 "error: unsupported architecture: $(uname -m)"; exit 1 ;;
 esac
 
-buildkit_version="v0.11.4-depot.2"
+buildkit_version="v0.11.5-depot.1"
 curl -L "https://github.com/depot/buildkit/releases/download/${buildkit_version}/buildkit-${buildkit_version}.linux-${arch}.tar.gz" | \
   tar -xz -C /usr/bin --strip-components=1
 
