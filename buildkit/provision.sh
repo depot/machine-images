@@ -17,9 +17,9 @@ swapon /swapfile
 echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
 echo "vm.swappiness = 0" >> /etc/sysctl.conf
 
-# Download machine-agent v1.10.1
+# Download machine-agent v1.11.0
 
-wget -O /tmp/machine-agent.tar.gz "https://dl.depot.dev/machine-agent/download/linux/$(uname -m)/v1.10.1"
+wget -O /tmp/machine-agent.tar.gz "https://dl.depot.dev/machine-agent/download/linux/$(uname -m)/v1.11.0"
 tar -zxf /tmp/machine-agent.tar.gz --strip-components=1 --directory /usr/bin bin/machine-agent
 /usr/bin/machine-agent --version
 
@@ -31,7 +31,7 @@ case "$(uname -m)" in
   *) echo >&2 "error: unsupported architecture: $(uname -m)"; exit 1 ;;
 esac
 
-buildkit_version="v0.11.5-depot.5"
+buildkit_version="v0.11.5-depot.6"
 curl -L "https://github.com/depot/buildkit/releases/download/${buildkit_version}/buildkit-${buildkit_version}.linux-${arch}.tar.gz" | \
   tar -xz -C /usr/bin --strip-components=1
 
