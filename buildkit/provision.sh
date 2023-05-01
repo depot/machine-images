@@ -3,7 +3,7 @@ set -ex
 
 # Update software
 yum update -y
-yum install -y git btrfs-progs
+yum install -y git btrfs-progs pigz
 
 # Disable unnecessary services
 systemctl disable postfix.service
