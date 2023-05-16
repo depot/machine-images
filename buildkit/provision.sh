@@ -19,7 +19,7 @@ echo "vm.swappiness = 0" >> /etc/sysctl.conf
 
 # Download machine-agent v1.13.0
 
-wget -O /tmp/machine-agent.tar.gz "https://dl.depot.dev/machine-agent/download/linux/$(uname -m)/v1.12.0"
+wget -O /tmp/machine-agent.tar.gz "https://dl.depot.dev/machine-agent/download/linux/$(uname -m)/v1.13.0"
 tar -zxf /tmp/machine-agent.tar.gz --strip-components=1 --directory /usr/bin bin/machine-agent
 /usr/bin/machine-agent --version
 
