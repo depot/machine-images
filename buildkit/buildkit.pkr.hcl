@@ -8,6 +8,12 @@ variable "ami-prefix" {
   default = "depot-machine-buildkit"
 }
 
+variable "log-token" {
+  type      = string
+  default   = ""
+  sensitive = true
+}
+
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 
@@ -85,6 +91,7 @@ build {
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     script          = "${path.root}/provision.sh"
+    env             = { LOG_TOKEN = var.log-token }
   }
 }
 
@@ -150,5 +157,6 @@ build {
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     script          = "${path.root}/provision.sh"
+    env             = { LOG_TOKEN = var.log-token }
   }
 }
