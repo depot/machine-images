@@ -77,6 +77,7 @@ EOF
 
 curl -1sLf 'https://repositories.timber.io/public/vector/cfg/setup/bash.rpm.sh' | bash
 yum install -y vector
+systemctl enable vector
 mkdir -p /etc/vector
 cat <<EOF > /etc/vector/vector.toml
 [sources.journald]
