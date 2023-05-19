@@ -17,9 +17,9 @@ swapon /swapfile
 echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
 echo "vm.swappiness = 0" >> /etc/sysctl.conf
 
-# Download machine-agent v1.13.0
+# Download machine-agent
 
-wget -O /tmp/machine-agent.tar.gz "https://dl.depot.dev/machine-agent/download/linux/$(uname -m)/v1.13.0"
+wget -O /tmp/machine-agent.tar.gz "https://dl.depot.dev/machine-agent/download/linux/$(uname -m)/v1.14.0"
 tar -zxf /tmp/machine-agent.tar.gz --strip-components=1 --directory /usr/bin bin/machine-agent
 /usr/bin/machine-agent --version
 
@@ -71,4 +71,22 @@ keepBytes = 30000000000 # 30 GB
 [[worker.oci.gcpolicy]]
 all = true
 keepBytes = 30000000000 # 30 GB
+EOF
+
+# Install Vector
+
+curl -1sLf 'https://repositories.timber.io/public/vector/cfg/setup/bash.rpm.sh' | bash
+yum install -y vector
+systemctl enable vector
+mkdir -p /etc/vector
+cat <<EOF > /etc/vector/vector.toml
+[sources.journald]
+type = "journald"
+include_units = ["machine-agent.service"]
+
+[sinks.axiom]
+type = "axiom"
+inputs = ["journald"]
+dataset = "buildkit"
+token = "${LOG_TOKEN}"
 EOF
