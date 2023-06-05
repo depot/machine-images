@@ -87,9 +87,13 @@ cat <<EOF > /etc/vector/vector.toml
 type = "journald"
 include_units = ["machine-agent.service"]
 
-[sinks.axiom]
-type = "axiom"
+[sinks.grafana]
+type = "loki"
 inputs = ["journald"]
-dataset = "buildkit"
-token = "${LOG_TOKEN}"
+endpoint = "https://logs-prod-006.grafana.net"
+encoding.codec = "json"
+labels.source = "machine"
+auth.strategy = "basic"
+auth.user = "613342"
+auth.password = "${LOG_TOKEN}"
 EOF
