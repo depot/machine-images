@@ -3,7 +3,7 @@ set -ex
 
 # Versions
 machine_agent_version="v1.16.0"
-buildkit_version="v0.11.6-depot.5"
+buildkit_version="v0.11.6-depot.6"
 
 # Update software
 yum update -y
