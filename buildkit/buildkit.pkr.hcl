@@ -160,3 +160,70 @@ build {
     env             = { LOG_TOKEN = var.log-token }
   }
 }
+
+source "amazon-ebs" "amd64-gpu" {
+  ami_name              = var.ami-name == "" ? "${var.ami-prefix}-amd64-gpu-${local.timestamp}" : "${var.ami-name}-amd64-gpu"
+  instance_type         = "p3.2xlarge" # I'm not sure if I can use a non-GPU instance instead.
+  region                = "us-east-1"
+  ssh_username          = "ec2-user"
+  force_deregister      = true
+  force_delete_snapshot = true
+  ami_groups            = ["all"]
+
+  # Copy to all non-opt-in regions (in addition to us-east-1 above)
+  # See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
+  ami_regions = [
+    "ap-northeast-1",
+    "ap-northeast-2",
+    "ap-northeast-3",
+    "ap-south-1",
+    "ap-southeast-1",
+    "ap-southeast-2",
+    "ca-central-1",
+    "eu-central-1",
+    "eu-north-1",
+    "eu-west-1",
+    "eu-west-2",
+    "eu-west-3",
+    "sa-east-1",
+    "us-east-2",
+    "us-west-1",
+    "us-west-2",
+  ]
+
+  source_ami_filter {
+    filters = {
+      # https://aws.amazon.com/releasenotes/aws-deep-learning-ami-gpu-cuda-11-5-amazon-linux-2/
+      name                = "Deep Learning AMI GPU CUDA 11.5.* (Amazon Linux 2) *"
+      architecture        = "x86_64"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+    }
+    most_recent = true
+    owners      = ["898082745236"] # AWS
+  }
+
+  launch_block_device_mappings {
+    device_name           = "/dev/xvda"
+    volume_size           = 40
+    volume_type           = "gp3"
+    delete_on_termination = true
+  }
+
+  # Wait up to an hour for the AMI to be ready.
+  aws_polling {
+    delay_seconds = 15
+    max_attempts  = 240
+  }
+}
+
+build {
+  name    = "amd64-gpu"
+  sources = ["source.amazon-ebs.amd64-gpu"]
+
+  provisioner "shell" {
+    execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+    scripts         = ["${path.root}/provision.sh", "${path.root}/provision-gpu.sh"]
+    env             = { LOG_TOKEN = var.log-token }
+  }
+}
