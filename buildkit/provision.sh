@@ -7,6 +7,7 @@ buildkit_version="v0.11.6-depot.7"
 
 # Update software
 export DEBIAN_FRONTEND=noninteractive
+rm -rf /var/lib/apt/lists/*
 apt-get update
 apt-get upgrade -y
 apt-get install -y pigz
