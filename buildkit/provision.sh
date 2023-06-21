@@ -105,3 +105,6 @@ curl --silent --remote-name --location https://github.com/ceph/ceph/raw/quincy/s
 chmod +x cephadm
 ./cephadm add-repo --release quincy
 ./cephadm install ceph-common
+
+# Remove lxd
+snap remove lxd
