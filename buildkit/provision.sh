@@ -6,6 +6,7 @@ machine_agent_version="v1.16.0"
 buildkit_version="v0.11.6-depot.7"
 
 # Update software
+export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get upgrade -y
 apt-get install -y pigz
