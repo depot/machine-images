@@ -77,6 +77,16 @@ source "amazon-ebs" "amd64" {
     delete_on_termination = true
   }
 
+  ami_block_device_mappings {
+    device_name = "/dev/sdb"
+    no_device   = true
+  }
+
+  ami_block_device_mappings {
+    device_name = "/dev/sdc"
+    no_device   = true
+  }
+
   # Wait up to an hour for the AMI to be ready.
   aws_polling {
     delay_seconds = 15
@@ -141,6 +151,16 @@ source "amazon-ebs" "arm64" {
     volume_size           = 10
     volume_type           = "gp3"
     delete_on_termination = true
+  }
+
+  ami_block_device_mappings {
+    device_name = "/dev/sdb"
+    no_device   = true
+  }
+
+  ami_block_device_mappings {
+    device_name = "/dev/sdc"
+    no_device   = true
   }
 
   # Wait up to an hour for the AMI to be ready.
