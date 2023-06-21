@@ -5,9 +5,11 @@ set -ex
 machine_agent_version="v1.16.0"
 buildkit_version="v0.11.6-depot.7"
 
+# Wait for cloud-init to finish
+cloud-init status --wait
+
 # Update software
 export DEBIAN_FRONTEND=noninteractive
-rm -rf /var/lib/apt/lists/*
 apt-get update
 apt-get upgrade -y
 apt-get install -y pigz
