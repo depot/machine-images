@@ -61,13 +61,13 @@ source "amazon-ebs" "amd64" {
 
   source_ami_filter {
     filters = {
-      name                = "amzn2-ami-kernel-5.10-hvm-2.*-x86_64-gp2"
+      name                = "ubuntu/images/hvm-ssd/ubuntu-*-20.04-*-server-*"
       architecture        = "x86_64"
       root-device-type    = "ebs"
       virtualization-type = "hvm"
     }
     most_recent = true
-    owners      = ["137112412989"] # AWS
+    owners      = ["099720109477"] # Canonical
   }
 
   launch_block_device_mappings {
@@ -127,13 +127,13 @@ source "amazon-ebs" "arm64" {
 
   source_ami_filter {
     filters = {
-      name                = "amzn2-ami-kernel-5.10-hvm-2.*-arm64-gp2"
+      name                = "ubuntu/images/hvm-ssd/ubuntu-*-20.04-*-server-*"
       architecture        = "arm64"
       root-device-type    = "ebs"
       virtualization-type = "hvm"
     }
     most_recent = true
-    owners      = ["137112412989"] # AWS
+    owners      = ["099720109477"] # Canonical
   }
 
   launch_block_device_mappings {

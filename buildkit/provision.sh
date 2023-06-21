@@ -6,12 +6,9 @@ machine_agent_version="v1.16.0"
 buildkit_version="v0.11.6-depot.7"
 
 # Update software
-yum update -y
-yum install -y git btrfs-progs pigz
-
-# Disable unnecessary services
-systemctl disable postfix.service
-systemctl disable update-motd.service
+apt-get update
+apt-get upgrade -y
+apt-get install -y pigz
 
 # Configure swap
 dd if=/dev/zero of=/swapfile bs=128M count=32
@@ -78,8 +75,8 @@ EOF
 
 # Install Vector
 
-curl -1sLf 'https://repositories.timber.io/public/vector/cfg/setup/bash.rpm.sh' | bash
-yum install -y vector
+curl -1sLf 'https://repositories.timber.io/public/vector/cfg/setup/bash.deb.sh' | bash
+apt-get install -y vector
 systemctl enable vector
 mkdir -p /etc/vector
 cat <<EOF > /etc/vector/vector.toml
@@ -97,3 +94,10 @@ auth.strategy = "basic"
 auth.user = "613342"
 auth.password = "${LOG_TOKEN}"
 EOF
+
+# Install ceph client
+
+curl --silent --remote-name --location https://github.com/ceph/ceph/raw/quincy/src/cephadm/cephadm
+chmod +x cephadm
+./cephadm add-repo --release quincy
+./cephadm install ceph-common
