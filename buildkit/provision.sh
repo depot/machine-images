@@ -2,8 +2,8 @@
 set -ex
 
 # Versions
-machine_agent_version="v1.20.1"
-buildkit_version="v0.11.6-depot.8"
+machine_agent_version="v1.20.2"
+buildkit_version="v0.11.6-depot.9"
 
 # Wait for cloud-init to finish
 cloud-init status --wait
@@ -56,21 +56,14 @@ enabled = true
 gc = true
 gckeepstorage = 30000000000 # 30GB
 max-parallelism = 12
+snapshotter = "stargz"
 
 [worker.containerd]
 enabled = false
 
 [[worker.oci.gcpolicy]]
-keepBytes = 10240000000 # 10 GB
-keepDuration = 604800 # 7 days - 3600 * 24 * 7
-filters = [
-  "type==source.local",
-  "type==exec.cachemount",
-  "type==source.git.checkout",
-]
-
-[[worker.oci.gcpolicy]]
-keepBytes = 30000000000 # 30 GB
+all = true
+keepDuration = 1209600 # 14 days: 3600 * 24 * 14
 
 [[worker.oci.gcpolicy]]
 all = true
