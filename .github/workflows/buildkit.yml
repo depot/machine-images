@@ -4,6 +4,7 @@ on:
     paths:
       - buildkit/**
       - .github/workflows/buildkit.yml
+  workflow_dispatch: {}
 
 permissions:
   contents: read
