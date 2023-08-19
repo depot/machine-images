@@ -14,10 +14,11 @@ systemctl enable docker.service
 # Initialize Docker
 systemctl start docker.service
 docker run --rm hello-world
-systemctl stop docker.service
+
+# Install amazon-ssm-agent
+dnf install -y amazon-ssm-agent
 
 # Install Vector
-
 curl -1sLf 'https://repositories.timber.io/public/vector/cfg/setup/bash.rpm.sh' | bash
 dnf install -y vector
 systemctl enable vector
@@ -25,7 +26,6 @@ mkdir -p /etc/vector
 cat <<EOF > /etc/vector/vector.toml
 [sources.docker]
 type = "docker_logs"
-
 [sinks.grafana]
 type = "loki"
 inputs = ["docker"]
@@ -38,4 +38,4 @@ auth.password = "${LOG_TOKEN}"
 EOF
 
 # Prepare cloud-init for shutdown
-cloud-init clean --logs
+# cloud-init clean --logs
