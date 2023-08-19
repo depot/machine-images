@@ -5,7 +5,7 @@ variable "ami-name" {
 
 variable "ami-prefix" {
   type    = string
-  default = "depot-machine-buildkit"
+  default = "depot-machine"
 }
 
 variable "log-token" {
@@ -29,6 +29,14 @@ packer {
   }
 }
 
+data "amazon-parameterstore" "ami-amd64" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-minimal-kernel-default-x86_64"
+}
+
+data "amazon-parameterstore" "ami-arm64" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-minimal-kernel-default-arm64"
+}
+
 source "amazon-ebs" "amd64" {
   ami_name              = var.ami-name == "" ? "${var.ami-prefix}-amd64-${local.timestamp}" : "${var.ami-name}-amd64"
   instance_type         = "c6i.large"
@@ -37,6 +45,7 @@ source "amazon-ebs" "amd64" {
   force_deregister      = true
   force_delete_snapshot = true
   ami_groups            = ["all"]
+  source_ami            = data.amazon-parameterstore.ami-amd64.value
 
   # Copy to all non-opt-in regions (in addition to us-east-1 above)
   # See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
@@ -59,20 +68,9 @@ source "amazon-ebs" "amd64" {
     // "us-west-2",
   ]
 
-  source_ami_filter {
-    filters = {
-      name                = "ubuntu/images/hvm-ssd/ubuntu-*-20.04-*-server-*"
-      architecture        = "x86_64"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
-    }
-    most_recent = true
-    owners      = ["099720109477"] # Canonical
-  }
-
   launch_block_device_mappings {
-    device_name           = "/dev/sda1"
-    volume_size           = 40
+    device_name           = "/dev/xvda"
+    volume_size           = 100
     volume_type           = "gp3"
     delete_on_termination = true
   }
@@ -113,6 +111,7 @@ source "amazon-ebs" "arm64" {
   force_deregister      = true
   force_delete_snapshot = true
   ami_groups            = ["all"]
+  source_ami            = data.amazon-parameterstore.ami-arm64.value
 
   # Copy to all non-opt-in regions (in addition to us-east-1 above)
   # See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
@@ -135,20 +134,9 @@ source "amazon-ebs" "arm64" {
     // "us-west-2",
   ]
 
-  source_ami_filter {
-    filters = {
-      name                = "ubuntu/images/hvm-ssd/ubuntu-*-20.04-*-server-*"
-      architecture        = "arm64"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
-    }
-    most_recent = true
-    owners      = ["099720109477"] # Canonical
-  }
-
   launch_block_device_mappings {
-    device_name           = "/dev/sda1"
-    volume_size           = 10
+    device_name           = "/dev/xvda"
+    volume_size           = 100
     volume_type           = "gp3"
     delete_on_termination = true
   }

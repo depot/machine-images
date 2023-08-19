@@ -1,9 +1,9 @@
-name: AMI (buildkit)
+name: AMI (machine)
 on:
   push:
     paths:
-      - buildkit/**
-      - .github/workflows/buildkit.yml
+      - machine/**
+      - .github/workflows/machine.yml
   workflow_dispatch: {}
 
 permissions:
@@ -25,7 +25,7 @@ jobs:
           mv packer /usr/local/bin/packer
 
       - name: Validate template
-        run: packer validate -syntax-only buildkit
+        run: packer validate -syntax-only machine
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -35,9 +35,9 @@ jobs:
           role-duration-seconds: 21600 # 6 hours
 
       - name: Init project
-        run: packer init buildkit
+        run: packer init machine
 
       - name: Build artifact
-        if: github.ref == 'refs/heads/main'
-        run: packer build -var ami-name=depot-buildkit-snapshot -var log-token=${{ secrets.LOG_TOKEN }} buildkit/buildkit.pkr.hcl
-        # run: packer build -var ami-name=depot-buildkit-2-snapshot -var log-token=${{ secrets.LOG_TOKEN }} buildkit/buildkit.pkr.hcl
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/al2023'
+        run: packer build -var ami-name=depot-machine-snapshot -var log-token=${{ secrets.LOG_TOKEN }} machine/machine.pkr.hcl
+        # run: packer build -var ami-name=depot-machine-2-snapshot -var log-token=${{ secrets.LOG_TOKEN }} machine/machine.pkr.hcl
