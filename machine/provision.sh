@@ -11,6 +11,11 @@ systemctl disable update-motd.service
 dnf install -y docker
 systemctl enable docker.service
 
+# Initialize Docker
+systemctl start docker.service
+docker run --rm hello-world
+systemctl stop docker.service
+
 # Install Vector
 
 curl -1sLf 'https://repositories.timber.io/public/vector/cfg/setup/bash.rpm.sh' | bash
