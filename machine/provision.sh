@@ -11,10 +11,6 @@ systemctl disable update-motd.service
 dnf install -y docker
 systemctl enable docker.service
 
-# Initialize Docker
-systemctl start docker.service
-docker run --rm hello-world
-
 # Install amazon-ssm-agent
 dnf install -y amazon-ssm-agent
 
@@ -26,6 +22,7 @@ mkdir -p /etc/vector
 cat <<EOF > /etc/vector/vector.toml
 [sources.docker]
 type = "docker_logs"
+
 [sinks.grafana]
 type = "loki"
 inputs = ["docker"]
@@ -37,5 +34,32 @@ auth.user = "613342"
 auth.password = "${LOG_TOKEN}"
 EOF
 
+# Configure Depot agent
+cat << EOF > /usr/lib/systemd/system/depot-agent.service
+[Unit]
+Description=Depot Agent
+After=network-online.target docker.service vector.service
+Requires=network-online.target docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker exec %n stop
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull ghcr.io/depot/agent:dev
+ExecStart=/usr/bin/docker run --rm --privileged --net=host --name %n \
+  -e DEPOT_CLOUD_CONNECTION_ID \
+  -v /lib/modules:/lib/modules:ro \
+  -v /etc/ceph:/etc/ceph \
+  -v /dev:/dev \
+  -v /sys:/sys \
+  ghcr.io/depot/agent:dev
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl enable depot-agent.service
+
 # Prepare cloud-init for shutdown
-# cloud-init clean --logs
+cloud-init clean --logs
