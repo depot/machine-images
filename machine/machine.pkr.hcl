@@ -29,14 +29,6 @@ packer {
   }
 }
 
-data "amazon-parameterstore" "ami-amd64" {
-  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-minimal-kernel-default-x86_64"
-}
-
-data "amazon-parameterstore" "ami-arm64" {
-  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-minimal-kernel-default-arm64"
-}
-
 source "amazon-ebs" "amd64" {
   ami_name              = var.ami-name == "" ? "${var.ami-prefix}-amd64-${local.timestamp}" : "${var.ami-name}-amd64"
   instance_type         = "c6i.large"
@@ -45,7 +37,6 @@ source "amazon-ebs" "amd64" {
   force_deregister      = true
   force_delete_snapshot = true
   ami_groups            = ["all"]
-  source_ami            = data.amazon-parameterstore.ami-amd64.value
 
   # Copy to all non-opt-in regions (in addition to us-east-1 above)
   # See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
@@ -112,7 +103,6 @@ source "amazon-ebs" "arm64" {
   force_deregister      = true
   force_delete_snapshot = true
   ami_groups            = ["all"]
-  source_ami            = data.amazon-parameterstore.ami-arm64.value
 
   # Copy to all non-opt-in regions (in addition to us-east-1 above)
   # See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
