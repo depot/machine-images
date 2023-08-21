@@ -28,7 +28,7 @@ jobs:
         run: packer validate -syntax-only machine
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::375021575472:role/github-actions-builder-images
