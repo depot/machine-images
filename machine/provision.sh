@@ -4,15 +4,22 @@ set -ex
 # Wait for cloud-init to finish
 cloud-init status --wait
 
-# Disable update-motd.service
-systemctl disable update-motd.service
+# Update all packages
+dnf update -y
+
+# Disable kdump
+systemctl disable kdump.service
+grubby --update-kernel=ALL --remove-args=crashkernel=auto
 
 # Install Docker
-dnf install -y docker
-systemctl enable docker.service
+dnf install -y podman
 
 # Install amazon-ssm-agent
-dnf install -y amazon-ssm-agent
+if [[ $(uname -m) == "aarch64" ]]; then
+  dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_arm64/amazon-ssm-agent.rpm
+else
+  dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+fi
 
 # Install Vector
 curl -1sLf 'https://repositories.timber.io/public/vector/cfg/setup/bash.rpm.sh' | bash
@@ -35,28 +42,26 @@ auth.password = "${LOG_TOKEN}"
 EOF
 
 # Configure Depot agent
-cat << EOF > /usr/lib/systemd/system/depot-agent.service
+cat << EOF > /etc/containers/systemd/depot-agent.container
 [Unit]
-Description=Depot Agent
-After=network-online.target docker.service vector.service
-Requires=network-online.target docker.service
+Description=Depot agent
+
+[Container]
+Image=ghcr.io/depot/agent:dev
+ContainerName=depot-agent
+Volume=/lib/modules:/lib/modules:ro
+Volume=/etc/ceph:/etc/ceph
+Volume=/dev:/dev
+Volume=/sys:/sys
+PodmanArgs=--privileged
+# Exec=sleep infinity
 
 [Service]
-TimeoutStartSec=0
 Restart=always
-ExecStartPre=-/usr/bin/docker exec %n stop
-ExecStartPre=-/usr/bin/docker rm %n
-ExecStartPre=/usr/bin/docker pull ghcr.io/depot/agent:dev
-ExecStart=/usr/bin/docker run --rm --privileged --net=host --name %n \
-  -e DEPOT_CLOUD_CONNECTION_ID \
-  -v /lib/modules:/lib/modules:ro \
-  -v /etc/ceph:/etc/ceph \
-  -v /dev:/dev \
-  -v /sys:/sys \
-  ghcr.io/depot/agent:dev
+TimeoutStartSec=900
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target default.target
 EOF
 systemctl daemon-reload
 systemctl enable depot-agent.service

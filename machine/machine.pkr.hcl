@@ -68,21 +68,22 @@ source "amazon-ebs" "amd64" {
     // "us-west-2",
   ]
 
+  source_ami_filter {
+    filters = {
+      name                = "CentOS Stream 9 x86_64 *"
+      architecture        = "x86_64"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+    }
+    most_recent = true
+    owners      = ["125523088429"] # CentOS
+  }
+
   launch_block_device_mappings {
-    device_name           = "/dev/xvda"
+    device_name           = "/dev/sda1"
     volume_size           = 100
     volume_type           = "gp3"
     delete_on_termination = true
-  }
-
-  ami_block_device_mappings {
-    device_name = "/dev/sdb"
-    no_device   = true
-  }
-
-  ami_block_device_mappings {
-    device_name = "/dev/sdc"
-    no_device   = true
   }
 
   # Wait up to an hour for the AMI to be ready.
@@ -134,21 +135,22 @@ source "amazon-ebs" "arm64" {
     // "us-west-2",
   ]
 
+  source_ami_filter {
+    filters = {
+      name                = "CentOS Stream 9 aarch64 *"
+      architecture        = "arm64"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+    }
+    most_recent = true
+    owners      = ["125523088429"] # CentOS
+  }
+
   launch_block_device_mappings {
-    device_name           = "/dev/xvda"
+    device_name           = "/dev/sda1"
     volume_size           = 100
     volume_type           = "gp3"
     delete_on_termination = true
-  }
-
-  ami_block_device_mappings {
-    device_name = "/dev/sdb"
-    no_device   = true
-  }
-
-  ami_block_device_mappings {
-    device_name = "/dev/sdc"
-    no_device   = true
   }
 
   # Wait up to an hour for the AMI to be ready.
