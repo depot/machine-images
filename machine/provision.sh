@@ -64,7 +64,6 @@ TimeoutStartSec=900
 WantedBy=multi-user.target default.target
 EOF
 systemctl daemon-reload
-systemctl enable depot-agent.service
 
 # Prepare cloud-init for shutdown
 cloud-init clean --logs
