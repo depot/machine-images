@@ -2,7 +2,7 @@
 set -ex
 
 # Versions
-machine_agent_version="v1.30.0"
+machine_agent_version="v1.30.1"
 buildkit_version="v0.11.6-depot.17"
 
 # Wait for cloud-init to finish
