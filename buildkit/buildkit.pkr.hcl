@@ -59,16 +59,18 @@ source "amazon-ebs" "amd64" {
     // "us-west-2",
   ]
 
-  source_ami_filter {
-    filters = {
-      name                = "ubuntu/images/hvm-ssd/ubuntu-*-20.04-*-server-*"
-      architecture        = "x86_64"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
-    }
-    most_recent = true
-    owners      = ["099720109477"] # Canonical
-  }
+  // ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-20230828
+  source_ami = "ami-04f215f0e52ec06cf"
+  // source_ami_filter {
+  //   filters = {
+  //     name                = "ubuntu/images/hvm-ssd/ubuntu-*-20.04-*-server-*"
+  //     architecture        = "x86_64"
+  //     root-device-type    = "ebs"
+  //     virtualization-type = "hvm"
+  //   }
+  //   most_recent = true
+  //   owners      = ["099720109477"] # Canonical
+  // }
 
   launch_block_device_mappings {
     device_name           = "/dev/sda1"
@@ -135,16 +137,18 @@ source "amazon-ebs" "arm64" {
     // "us-west-2",
   ]
 
-  source_ami_filter {
-    filters = {
-      name                = "ubuntu/images/hvm-ssd/ubuntu-*-20.04-*-server-*"
-      architecture        = "arm64"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
-    }
-    most_recent = true
-    owners      = ["099720109477"] # Canonical
-  }
+  // ubuntu/images/hvm-ssd/ubuntu-focal-20.04-arm64-server-20230828
+  source_ami = "ami-0abeb171ba7210dc7"
+  // source_ami_filter {
+  //   filters = {
+  //     name                = "ubuntu/images/hvm-ssd/ubuntu-*-20.04-*-server-*"
+  //     architecture        = "arm64"
+  //     root-device-type    = "ebs"
+  //     virtualization-type = "hvm"
+  //   }
+  //   most_recent = true
+  //   owners      = ["099720109477"] # Canonical
+  // }
 
   launch_block_device_mappings {
     device_name           = "/dev/sda1"
